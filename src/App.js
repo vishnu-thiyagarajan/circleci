@@ -1,26 +1,41 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from 'react'
+import { NaviBar } from './components/NaviBar'
+import BottomBar from './components/BottomBar'
+import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles'
+import ListContainer from './components/ListContainer'
+import TaskContainer from './components/TaskContainer'
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route
+} from 'react-router-dom'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+const theme = createMuiTheme({
+  palette: {
+    primary: {
+      main: '#000'
+    }
+  }
 }
-
-export default App;
+)
+export default function App () {
+  return (
+    <MuiThemeProvider theme={theme}>
+      <Router><NaviBar />
+        <Switch>
+          <Route path='/today'>
+            <TaskContainer />
+            <BottomBar />
+          </Route>
+          <Route path='/scheduled'>
+            <TaskContainer />
+            <BottomBar />
+          </Route>
+          <Route path='/'>
+            <ListContainer />
+          </Route>
+        </Switch>
+      </Router>
+    </MuiThemeProvider>
+  )
+}
