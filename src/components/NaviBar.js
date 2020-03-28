@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
 import ToggleButton from '@material-ui/lab/ToggleButton'
@@ -11,7 +11,7 @@ import ReactTooltip from 'react-tooltip'
 import Box from '@material-ui/core/Box'
 import TextField from '@material-ui/core/TextField'
 import { makeStyles } from '@material-ui/core/styles'
-
+import { TodoContext } from '../App'
 import ButtonGrp from './ButtonGrp'
 
 const useStyles = makeStyles({
@@ -25,7 +25,7 @@ const useStyles = makeStyles({
   },
   controls: {
     display: 'flex',
-    justifyContent: 'space-between'
+    justifyContent: 'space-around'
   },
   center: {
     display: 'flex',
@@ -33,11 +33,45 @@ const useStyles = makeStyles({
   }
 })
 export function NaviBar (props) {
+  const todoContext = useContext(TodoContext)
+  const [name, setName] = useState('')
   const [input, setInput] = useState('')
   const [selectedTask, setSelectedTask] = useState(null)
   const getNewList = () => setInput(input === 'newlist' ? '' : 'newlist')
   const getSearchList = () => setInput(input !== 'searchlist' ? 'searchlist' : '')
   const classes = useStyles()
+  const addNewList = (event) => {
+    if (event.key === 'Enter' && event.target.value) {
+      const data = {
+        id: todoContext.todos.length ? parseInt(todoContext.todos[todoContext.todos.length - 1].id) + 1 : 0,
+        listname: event.target.value,
+        display: true,
+        tasks: []
+      }
+      fetch('https://todomongoapi.herokuapp.com/list', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      }).then((res) => {
+        if (res.status !== 201) return todoContext.setError(true)
+        todoContext.setTodos([...todoContext.todos, data])
+        setInput('')
+        setName('')
+        todoContext.setSuccess(true)
+        todoContext.setMessage('New list created!')
+      }).catch(function (err) {
+        console.log('Fetch Error :', err)
+        todoContext.setError(true)
+      })
+    }
+  }
+  const searchList = (event) => {
+    const srchInput = event.target.value
+    if (srchInput) todoContext.todos.forEach((item) => { item.display = item.listname.includes(srchInput) })
+    if (!srchInput) todoContext.todos.forEach((item) => { item.display = true })
+    todoContext.setTodos(todoContext.todos.slice())
+  }
+
   return (
     <>
       <AppBar className={classes.root}>
@@ -74,14 +108,23 @@ export function NaviBar (props) {
           {selectedTask && <div className={classes.center}>{selectedTask}</div>}
           {input === 'newlist' && !selectedTask &&
             <TextField
-              label='New list name'
+              value={name}
+              onChange={(event) => setName(event.target.value)}
+              onKeyPress={addNewList}
               size='small'
               autoFocus
+              label='New list name'
               variant='outlined'
               fullWidth
             />}
           {input === 'searchlist' && !selectedTask &&
             <TextField
+              onKeyUp={searchList}
+              onBlur={(event) => {
+                event.target.value = ''
+                searchList(event)
+                setInput('')
+              }}
               size='small'
               autoFocus
               label='Search list name'

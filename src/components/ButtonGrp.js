@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup'
 import ListIcon from '@material-ui/icons/List'
 import TodayIcon from '@material-ui/icons/Today'
@@ -7,8 +7,10 @@ import ToggleButton from '@material-ui/lab/ToggleButton'
 import Badge from '@material-ui/core/Badge'
 import { Link } from 'react-router-dom'
 import ReactTooltip from 'react-tooltip'
+import { TodoContext } from '../App'
 
 function ButtonGrp () {
+  const todoContext = useContext(TodoContext)
   const [type, setType] = useState('Lists')
   const handleType = (event, newType) => {
     if (newType !== null) setType(newType)
@@ -22,7 +24,7 @@ function ButtonGrp () {
       >
         <ToggleButton value='Lists' data-tip='Lists'>
           <Link to='/'>
-            <Badge badgeContent={4} color='primary'>
+            <Badge badgeContent={todoContext.todos.length} color='primary'>
               <ListIcon fontSize='large' color='primary' />
             </Badge>
           </Link>

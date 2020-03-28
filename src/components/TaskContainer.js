@@ -11,7 +11,7 @@ const useStyles = makeStyles({
   }
 })
 
-function ListContainer () {
+function TaskContainer (props) {
   const classes = useStyles()
   return (
     <div>
@@ -22,4 +22,4 @@ function ListContainer () {
   )
 }
 
-export default ListContainer
+export default TaskContainer

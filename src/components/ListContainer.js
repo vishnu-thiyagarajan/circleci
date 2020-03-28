@@ -1,7 +1,8 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import Container from '@material-ui/core/Container'
 import { makeStyles } from '@material-ui/core/styles'
 import List from './List'
+import { TodoContext } from '../App'
 
 const useStyles = makeStyles({
   Container: {
@@ -12,12 +13,13 @@ const useStyles = makeStyles({
 })
 
 function ListContainer () {
+  const todoContext = useContext(TodoContext)
   const classes = useStyles()
   return (
     <div>
       <Container className={classes.Container}>
-        {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((i) => {
-          return (<List key={i} />)
+        {todoContext.todos && todoContext.todos.map((list) => {
+          return (list.display ? <List key={list.id} list={list} /> : <div key={list.id} />)
         })}
       </Container>
     </div>
