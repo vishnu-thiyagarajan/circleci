@@ -5,35 +5,40 @@ import BottomBar from './BottomBar'
 import { useParams } from 'react-router-dom'
 import { TodoContext } from '../App'
 import Task from './Task.js'
+import AddTask from './AddTask'
 
 const useStyles = makeStyles({
   Container: {
     display: 'flex',
-    flexWrap: 'column-wrap',
+    flexDirection: 'column',
     marginTop: '125px',
-    justifyContent: 'center'
+    alignItems: 'center'
   }
 })
 
 function TaskContainer (props) {
   const todoContext = useContext(TodoContext)
   const [selectedList, setSelectedList] = useState(null)
+  const [listIndex, setListIndex] = useState(null)
   const { id } = useParams()
   useEffect(() => {
-    const index = todoContext.todos.findIndex((list) => list._id === id)
+    const index = todoContext.todos.findIndex((list) => list.id === Number(id))
+    setListIndex(index)
     setSelectedList(todoContext.todos[index])
   }, [id, todoContext])
   const classes = useStyles()
   return (
-    <div>
+    <>
       <Container className={classes.Container}>
+        <AddTask selectedList={selectedList} listIndex={listIndex} />
+        <br />
         {selectedList && selectedList.tasks.map((task) => {
-          return (<Task key={task.id} task={task} />)
+          return (<Task key={task.id} task={task} listIndex={listIndex} />)
         })}
         <div />
       </Container>
       <BottomBar />
-    </div>
+    </>
   )
 }
 

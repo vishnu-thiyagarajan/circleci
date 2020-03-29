@@ -92,7 +92,7 @@ export default function List (props) {
   const selectList = () => setSelectedList(listObj)
   const renderRedirect = () => {
     if (selectedList) {
-      return (<Redirect to={`/list/${selectedList._id}`} />)
+      return (<Redirect to={`/list/${selectedList.id}`} />)
     }
   }
   return (
