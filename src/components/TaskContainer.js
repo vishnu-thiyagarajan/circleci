@@ -4,12 +4,14 @@ import { makeStyles } from '@material-ui/core/styles'
 import BottomBar from './BottomBar'
 import { useParams } from 'react-router-dom'
 import { TodoContext } from '../App'
+import Task from './Task.js'
 
 const useStyles = makeStyles({
   Container: {
     display: 'flex',
-    flexWrap: 'wrap',
-    marginTop: '125px'
+    flexWrap: 'column-wrap',
+    marginTop: '125px',
+    justifyContent: 'center'
   }
 })
 
@@ -25,11 +27,10 @@ function TaskContainer (props) {
   return (
     <div>
       <Container className={classes.Container}>
-        {selectedList &&
-          <div>
-            {selectedList._id}
-          </div>}
-        <br />
+        {selectedList && selectedList.tasks.map((task) => {
+          return (<Task key={task.id} task={task} />)
+        })}
+        <div />
       </Container>
       <BottomBar />
     </div>
