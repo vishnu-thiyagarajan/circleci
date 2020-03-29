@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import { NaviBar } from './components/NaviBar'
-import BottomBar from './components/BottomBar'
 import Snackbar from '@material-ui/core/Snackbar'
 import MuiAlert from '@material-ui/lab/Alert'
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles'
@@ -54,16 +53,24 @@ export default function App () {
   return (
     <MuiThemeProvider theme={theme}>
       <Router>
-        <TodoContext.Provider value={{ todos: todos, setTodos: setTodos, setSuccess: setSuccess, setError: setError, setMessage: setMessage }}>
+        <TodoContext.Provider value={{
+          todos: todos,
+          setTodos: setTodos,
+          setSuccess: setSuccess,
+          setError: setError,
+          setMessage: setMessage
+        }}
+        >
           <NaviBar />
           <Switch>
+            <Route path='/list/:id'>
+              <TaskContainer />
+            </Route>
             <Route path='/today'>
               <TaskContainer />
-              <BottomBar />
             </Route>
             <Route path='/scheduled'>
               <TaskContainer />
-              <BottomBar />
             </Route>
             <Route path='/'>
               {loading ? 'Loading' : <ListContainer />}

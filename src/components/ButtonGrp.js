@@ -22,21 +22,21 @@ function ButtonGrp () {
         exclusive
         onChange={handleType}
       >
-        <ToggleButton value='Lists' data-tip='Lists'>
+        <ToggleButton value='Lists' data-tip='Lists' style={{ maxWidth: '40px', maxHeight: '35px' }}>
           <Link to='/'>
             <Badge badgeContent={todoContext.todos.length} color='primary'>
               <ListIcon fontSize='large' color='primary' />
             </Badge>
           </Link>
         </ToggleButton>
-        <ToggleButton value='Today' data-tip='Today'>
+        <ToggleButton value='Today' data-tip='Today' style={{ maxWidth: '40px', maxHeight: '35px' }}>
           <Link to='/today'>
             <Badge badgeContent={4} color='primary'>
               <TodayIcon fontSize='large' color='primary' />
             </Badge>
           </Link>
         </ToggleButton>
-        <ToggleButton value='Scheduled' data-tip='Scheduled'>
+        <ToggleButton value='Scheduled' data-tip='Scheduled' style={{ maxWidth: '40px', maxHeight: '35px' }}>
           <Link to='/scheduled'>
             <Badge badgeContent={4} color='primary'>
               <ScheduleIcon fontSize='large' color='primary' />

@@ -7,6 +7,7 @@ import DeleteIcon from '@material-ui/icons/Delete'
 import TextField from '@material-ui/core/TextField'
 import ReactTooltip from 'react-tooltip'
 import { TodoContext } from '../App'
+import { Redirect } from 'react-router-dom'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -48,6 +49,7 @@ export default function List (props) {
   const todoContext = useContext(TodoContext)
   const listObj = props.list
   const classes = useStyles()
+  const [selectedList, setSelectedList] = useState(null)
   const [name, setName] = useState(listObj.listname)
   const [edit, setEdit] = useState(false)
   const tasks = listObj.tasks.map(task => task.taskname)
@@ -87,10 +89,17 @@ export default function List (props) {
       console.log('Fetch Error :', err)
     })
   }
+  const selectList = () => setSelectedList(listObj)
+  const renderRedirect = () => {
+    if (selectedList) {
+      return (<Redirect to={`/list/${selectedList._id}`} />)
+    }
+  }
   return (
     <div>
+      {renderRedirect()}
       <div className={classes.root}>
-        <Paper elevation={20}>
+        <Paper onClick={selectList} elevation={20}>
           <Badge badgeContent={yetTodo} color='primary'>
             <div className={classes.preview}>
               <p className={classes.para}>{tasks.join('\n')}</p>

@@ -36,7 +36,7 @@ export function NaviBar (props) {
   const todoContext = useContext(TodoContext)
   const [name, setName] = useState('')
   const [input, setInput] = useState('')
-  const [selectedTask, setSelectedTask] = useState(null)
+  const selectedList = window.location.pathname !== '/'
   const getNewList = () => setInput(input === 'newlist' ? '' : 'newlist')
   const getSearchList = () => setInput(input !== 'searchlist' ? 'searchlist' : '')
   const classes = useStyles()
@@ -76,11 +76,11 @@ export function NaviBar (props) {
     <>
       <AppBar className={classes.root}>
         <Toolbar className={classes.controls}>
-          {selectedTask &&
+          {selectedList &&
             <Button data-tip='Go Back'>
               <ArrowBackIcon color='primary' />
             </Button>}
-          {!selectedTask &&
+          {!selectedList &&
             <ToggleButton
               data-tip='New List'
               value='false'
@@ -90,11 +90,11 @@ export function NaviBar (props) {
               <AddIcon color='primary' />
             </ToggleButton>}
           <ButtonGrp />
-          {selectedTask &&
+          {selectedList &&
             <Button data-tip='Clear done'>
               <ClearAllIcon color='primary' />
             </Button>}
-          {!selectedTask &&
+          {!selectedList &&
             <ToggleButton
               data-tip='Search Lists'
               value='false'
@@ -105,8 +105,8 @@ export function NaviBar (props) {
             </ToggleButton>}
         </Toolbar>
         <Box m='auto' p={1} width='50%'>
-          {selectedTask && <div className={classes.center}>{selectedTask}</div>}
-          {input === 'newlist' && !selectedTask &&
+          {selectedList && <div className={classes.center}>{selectedList}</div>}
+          {input === 'newlist' && !selectedList &&
             <TextField
               value={name}
               onChange={(event) => setName(event.target.value)}
@@ -117,7 +117,7 @@ export function NaviBar (props) {
               variant='outlined'
               fullWidth
             />}
-          {input === 'searchlist' && !selectedTask &&
+          {input === 'searchlist' && !selectedList &&
             <TextField
               onKeyUp={searchList}
               onBlur={(event) => {
