@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import DoneOutlineIcon from '@material-ui/icons/DoneOutline'
 import ToggleButton from '@material-ui/lab/ToggleButton'
 import { makeStyles } from '@material-ui/core/styles'
@@ -10,19 +10,19 @@ const useStyles = makeStyles({
     justifyContent: 'center',
     width: '100%',
     position: 'fixed',
-    bottom: 0
+    bottom: 0,
+    backgroundColor: 'white'
   }
 })
-export default function BottomBar () {
-  const [done, setDone] = useState(false)
+export default function BottomBar (props) {
   const classes = useStyles()
   return (
     <div className={classes.stickToBottom}>
       <ToggleButton
         data-tip='Show done tasks'
         value='false'
-        selected={done}
-        onChange={() => { setDone(!done) }}
+        selected={props.doneTasks}
+        onChange={() => { props.setDoneTasks(!props.doneTasks) }}
       >
         <DoneOutlineIcon color='primary' />
       </ToggleButton>

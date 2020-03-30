@@ -23,8 +23,8 @@ function Alert (props) {
   return <MuiAlert elevation={6} variant='filled' {...props} />
 }
 export default function App () {
-  const [message, setMessage] = useState('')
   const [loading, setLoading] = useState(true)
+  const [message, setMessage] = useState('')
   const [success, setSuccess] = useState(false)
   const [error, setError] = useState(false)
   const [todos, setTodos] = useState([])
@@ -76,12 +76,12 @@ export default function App () {
               {loading ? 'Loading' : <ListContainer />}
             </Route>
           </Switch>
-          <Snackbar open={success} autoHideDuration={5000} onClose={handleClose}>
+          <Snackbar open={success} autoHideDuration={2000} onClose={handleClose}>
             <Alert onClose={handleClose} severity='success'>
               {message}
             </Alert>
           </Snackbar>
-          <Snackbar open={error} autoHideDuration={5000} onClose={handleClose}>
+          <Snackbar open={error} autoHideDuration={2000} onClose={handleClose}>
             <Alert onClose={handleClose} severity='error'>
               Something went wrong!
             </Alert>
