@@ -56,15 +56,16 @@ export default function Task (props) {
     todos[listIndex].tasks[taskIndex].done = !todos[listIndex].tasks[taskIndex].done
     updateTask(todos[listIndex].tasks[taskIndex], 'Task Edited!')
   }
+  const taskDetails = (taskObj) => {
+    todos[listIndex].tasks[taskIndex] = taskObj
+    updateTask(todos[listIndex].tasks[taskIndex], 'Task Details Updated!')
+  }
   const toggleEditName = () => setEditName(!editName)
   const editTaskName = (event) => {
     if (event.key !== 'Enter') return null
     if (!newName) return setNewName(taskObj.taskname)
     todos[listIndex].tasks[taskIndex].taskname = newName
     updateTask(todos[listIndex].tasks[taskIndex], 'Task Renamed!')
-  }
-  const openDetails = () => {
-
   }
   return (
     <>
@@ -93,7 +94,7 @@ export default function Task (props) {
           <ListItemSecondaryAction>
             {/* <div>{taskObj.duedate}</div>
             <div>{taskObj.priority}</div> */}
-            <TaskDetails />
+            <TaskDetails taskObj={taskObj} taskDetails={taskDetails} />
           </ListItemSecondaryAction>
         </ListItem>
         <ReactTooltip />
