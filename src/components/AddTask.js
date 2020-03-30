@@ -42,6 +42,7 @@ export default function AddTask (props) {
         todoContext.setMessage('New task added!')
       })
       .catch(function (err) {
+        todoContext.setError(true)
         console.log('Fetch Error :', err)
       })
   }

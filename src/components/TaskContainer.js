@@ -32,8 +32,8 @@ function TaskContainer (props) {
       <Container className={classes.Container}>
         <AddTask selectedList={selectedList} listIndex={listIndex} />
         <br />
-        {selectedList && selectedList.tasks.map((task) => {
-          return (<Task key={task.id} task={task} listIndex={listIndex} />)
+        {selectedList && selectedList.tasks.map((task, index) => {
+          return (<Task key={task.id} task={task} listIndex={listIndex} taskIndex={index} />)
         })}
         <div />
       </Container>
