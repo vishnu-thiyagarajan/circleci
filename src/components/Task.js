@@ -6,11 +6,10 @@ import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
 import ListItemText from '@material-ui/core/ListItemText'
 import Checkbox from '@material-ui/core/Checkbox'
-import IconButton from '@material-ui/core/IconButton'
-import CommentIcon from '@material-ui/icons/Comment'
 import ReactTooltip from 'react-tooltip'
 import { TodoContext } from '../App'
 import { TextField } from '@material-ui/core'
+import TaskDetails from './TaskDetails'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -22,7 +21,8 @@ const useStyles = makeStyles((theme) => ({
     margin: '10px'
   },
   listItemText: {
-    fontSize: '20px'
+    fontSize: '20px',
+    wordWrap: 'break-word'
   }
 }))
 
@@ -58,9 +58,13 @@ export default function Task (props) {
   }
   const toggleEditName = () => setEditName(!editName)
   const editTaskName = (event) => {
-    if (event.key !== 'Enter' || !newName) return
+    if (event.key !== 'Enter') return null
+    if (!newName) return setNewName(taskObj.taskname)
     todos[listIndex].tasks[taskIndex].taskname = newName
     updateTask(todos[listIndex].tasks[taskIndex], 'Task Renamed!')
+  }
+  const openDetails = () => {
+
   }
   return (
     <>
@@ -89,9 +93,7 @@ export default function Task (props) {
           <ListItemSecondaryAction>
             {/* <div>{taskObj.duedate}</div>
             <div>{taskObj.priority}</div> */}
-            <IconButton edge='end'>
-              <CommentIcon data-tip='Details' />
-            </IconButton>
+            <TaskDetails />
           </ListItemSecondaryAction>
         </ListItem>
         <ReactTooltip />
