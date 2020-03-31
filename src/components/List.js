@@ -89,7 +89,10 @@ export default function List (props) {
       console.log('Fetch Error :', err)
     })
   }
-  const selectList = () => setSelectedList(listObj)
+  const selectList = () => {
+    todoContext.setSelectedList(listObj)
+    setSelectedList(listObj)
+  }
   const renderRedirect = () => {
     if (selectedList) {
       return (<Redirect to={`/list/${selectedList.id}`} />)

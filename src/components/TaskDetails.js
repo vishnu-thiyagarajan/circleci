@@ -63,7 +63,7 @@ export default function TaskDetails (props) {
               id='date-picker-dialog'
               format='yyyy-MM-dd'
               value={task.duedate ? task.duedate : null}
-              onChange={(date) => setTask({ ...task, duedate: date })}
+              onChange={(date) => setTask({ ...task, duedate: date.toISOString().slice(0, 10) })}
             />
           </MuiPickersUtilsProvider>
           <FormControl variant='filled' fullWidth>

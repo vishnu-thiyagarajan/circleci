@@ -15,6 +15,9 @@ function ButtonGrp () {
   const handleType = (event, newType) => {
     if (newType !== null) setType(newType)
   }
+  const handleList = () => todoContext.setSelectedList(null)
+  const handleToday = () => todoContext.setSelectedList('today')
+  const handleScheduled = () => todoContext.setSelectedList('scheduled')
   return (
     <>
       <ToggleButtonGroup
@@ -25,26 +28,26 @@ function ButtonGrp () {
         <ToggleButton value='Lists' data-tip='Lists' style={{ maxWidth: '40px', maxHeight: '35px' }}>
           <Link to='/'>
             <Badge badgeContent={todoContext.todos.length} color='primary'>
-              <ListIcon fontSize='large' color='primary' />
+              <ListIcon onClick={handleList} fontSize='large' color='primary' />
             </Badge>
           </Link>
         </ToggleButton>
         <ToggleButton value='Today' data-tip='Today' style={{ maxWidth: '40px', maxHeight: '35px' }}>
           <Link to='/today'>
             <Badge badgeContent={4} color='primary'>
-              <TodayIcon fontSize='large' color='primary' />
+              <TodayIcon onClick={handleToday} fontSize='large' color='primary' />
             </Badge>
           </Link>
         </ToggleButton>
         <ToggleButton value='Scheduled' data-tip='Scheduled' style={{ maxWidth: '40px', maxHeight: '35px' }}>
           <Link to='/scheduled'>
             <Badge badgeContent={4} color='primary'>
-              <ScheduleIcon fontSize='large' color='primary' />
+              <ScheduleIcon onClick={handleScheduled} fontSize='large' color='primary' />
             </Badge>
           </Link>
         </ToggleButton>
       </ToggleButtonGroup>
-      <ReactTooltip />
+      <ReactTooltip place='bottom' />
     </>
   )
 }

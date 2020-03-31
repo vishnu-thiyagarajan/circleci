@@ -18,9 +18,23 @@ const useStyles = makeStyles({
 
 function TaskContainer (props) {
   const todoContext = useContext(TodoContext)
+  const [showDone, setShowDone] = useState(false)
+  const section = props.section
+  let filtered = []
+  if (section) {
+    todoContext.todos.forEach((eachList, index) => {
+      filtered.push(...eachList.tasks.map(item => ({
+        ...item,
+        listname: eachList.listname,
+        listIndex: index
+      })))
+    })
+    const today = new Date().toISOString().slice(0, 10)
+    if (section === 'today') filtered = filtered.filter(item => item.duedate === today)
+    if (section === 'scheduled') filtered = filtered.filter(item => item.duedate !== '')
+  }
   const [selectedList, setSelectedList] = useState(null)
   const [listIndex, setListIndex] = useState(null)
-  const [showDone, setShowDone] = useState(false)
   const [doneTasks, setDoneTasks] = useState(false)
   const { id } = useParams()
   useEffect(() => {
@@ -28,17 +42,23 @@ function TaskContainer (props) {
     setListIndex(index)
     const listObj = todoContext.todos[index]
     setSelectedList(listObj)
+    todoContext.setSelectedList(listObj)
     if (listObj) setShowDone(listObj.tasks.filter(task => task.done === true).length > 0)
-  }, [id, todoContext.todos])
+    setShowDone(filtered.filter(task => task.done === true).length > 0)
+  }, [id, todoContext, filtered])
   const classes = useStyles()
   return (
     <>
       <Container className={classes.Container}>
-        <AddTask selectedList={selectedList} listIndex={listIndex} />
+        {selectedList && <AddTask selectedList={selectedList} listIndex={listIndex} />}
         <br />
         {selectedList && selectedList.tasks.map((task, index) => {
           if (!doneTasks && task.done) return (<div key={index} />)
           return (<Task key={index} task={task} listIndex={listIndex} taskIndex={index} />)
+        })}
+        {section && filtered.map((task, index) => {
+          if (!doneTasks && task.done) return (<div key={index} />)
+          return (<Task key={index} task={task} section={section} listIndex={task.listIndex} taskIndex={index} />)
         })}
         <div />
       </Container>

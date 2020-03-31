@@ -23,6 +23,7 @@ function Alert (props) {
   return <MuiAlert elevation={6} variant='filled' {...props} />
 }
 export default function App () {
+  const [selectedList, setSelectedList] = useState(null)
   const [loading, setLoading] = useState(true)
   const [message, setMessage] = useState('')
   const [success, setSuccess] = useState(false)
@@ -58,7 +59,9 @@ export default function App () {
           setTodos: setTodos,
           setSuccess: setSuccess,
           setError: setError,
-          setMessage: setMessage
+          setMessage: setMessage,
+          selectedList: selectedList,
+          setSelectedList: setSelectedList
         }}
         >
           <NaviBar />
@@ -67,10 +70,10 @@ export default function App () {
               <TaskContainer />
             </Route>
             <Route path='/today'>
-              <TaskContainer />
+              <TaskContainer section='today' />
             </Route>
             <Route path='/scheduled'>
-              <TaskContainer />
+              <TaskContainer section='scheduled' />
             </Route>
             <Route path='/'>
               {loading ? 'Loading' : <ListContainer />}

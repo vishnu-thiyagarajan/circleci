@@ -5,11 +5,13 @@ import ListItem from '@material-ui/core/ListItem'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
 import ListItemText from '@material-ui/core/ListItemText'
+import DeleteIcon from '@material-ui/icons/Delete'
 import Checkbox from '@material-ui/core/Checkbox'
 import ReactTooltip from 'react-tooltip'
 import { TodoContext } from '../App'
 import { TextField } from '@material-ui/core'
 import TaskDetails from './TaskDetails'
+import Button from '@material-ui/core/Button'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -67,6 +69,25 @@ export default function Task (props) {
     todos[listIndex].tasks[taskIndex].taskname = newName
     updateTask(todos[listIndex].tasks[taskIndex], 'Task Renamed!')
   }
+  const deleteTask = (event) => {
+    const todos = todoContext.todos
+    const objToBeDeleted = todos[listIndex].tasks[taskIndex]
+    objToBeDeleted.listid = todos[listIndex].id
+    window.fetch('https://todomongoapi.herokuapp.com/task', {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(objToBeDeleted)
+    }).then((res) => {
+      if (res.status !== 204) return todoContext.setError(true)
+      todos[listIndex].tasks = todos[listIndex].tasks.filter((task) => task.id !== objToBeDeleted.id)
+      todoContext.setTodos([...todos])
+      todoContext.setSuccess(true)
+      todoContext.setMessage('Task deleted!')
+    }).catch(function (err) {
+      todoContext.setError(true)
+      console.log('Fetch Error :', err)
+    })
+  }
   return (
     <>
       <List className={classes.root}>
@@ -91,9 +112,13 @@ export default function Task (props) {
               onBlur={toggleEditName}
               fullWidth
             />}
+          {!props.section &&
+            <Button data-tip='Delete' onClick={deleteTask}>
+              <DeleteIcon />
+            </Button>}
+          {props.section &&
+            <div>{taskObj.listname}</div>}
           <ListItemSecondaryAction>
-            {/* <div>{taskObj.duedate}</div>
-            <div>{taskObj.priority}</div> */}
             <TaskDetails taskObj={taskObj} taskDetails={taskDetails} />
           </ListItemSecondaryAction>
         </ListItem>

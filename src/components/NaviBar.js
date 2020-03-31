@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
 import ToggleButton from '@material-ui/lab/ToggleButton'
@@ -13,6 +13,7 @@ import TextField from '@material-ui/core/TextField'
 import { makeStyles } from '@material-ui/core/styles'
 import { TodoContext } from '../App'
 import ButtonGrp from './ButtonGrp'
+import { useHistory } from 'react-router-dom'
 
 const useStyles = makeStyles({
   root: {
@@ -33,12 +34,13 @@ const useStyles = makeStyles({
   }
 })
 export function NaviBar (props) {
+  const history = useHistory()
   const todoContext = useContext(TodoContext)
   const [name, setName] = useState('')
+  const [selectedList, setSelectedList] = useState(null)
   const [input, setInput] = useState('')
-  const selectedList = window.location.pathname !== '/'
   const getNewList = () => setInput(input === 'newlist' ? '' : 'newlist')
-  const getSearchList = () => setInput(input !== 'searchlist' ? 'searchlist' : '')
+  const getSearchList = () => setInput(input === 'searchlist' ? '' : 'searchlist')
   const classes = useStyles()
   const addNewList = (event) => {
     if (event.key === 'Enter' && event.target.value) {
@@ -71,14 +73,16 @@ export function NaviBar (props) {
     if (!srchInput) todoContext.todos.forEach((item) => { item.display = true })
     todoContext.setTodos(todoContext.todos.slice())
   }
-
+  useEffect(() => {
+    setSelectedList(!!todoContext.selectedList)
+  }, [todoContext.selectedList])
   return (
     <>
       <AppBar className={classes.root}>
         <Toolbar className={classes.controls}>
           {selectedList &&
-            <Button data-tip='Go Back'>
-              <ArrowBackIcon color='primary' />
+            <Button onClick={() => history.goBack()}>
+              <ArrowBackIcon color='primary' data-tip='Go Back' />
             </Button>}
           {!selectedList &&
             <ToggleButton
@@ -134,7 +138,7 @@ export function NaviBar (props) {
             />}
         </Box>
       </AppBar>
-      <ReactTooltip />
+      <ReactTooltip place='bottom' />
     </>
   )
 }
