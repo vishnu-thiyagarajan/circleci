@@ -46,7 +46,6 @@ export default function Task (props) {
     }).then((res) => {
       if (res.status !== 204) return todoContext.setError(true)
       todoContext.setTodos([...todos])
-      setEditName(false)
       todoContext.setSuccess(true)
       todoContext.setMessage(msg)
     }).catch(function (err) {
@@ -68,6 +67,7 @@ export default function Task (props) {
     if (!newName) return setNewName(taskObj.taskname)
     todos[listIndex].tasks[taskIndex].taskname = newName
     updateTask(todos[listIndex].tasks[taskIndex], 'Task Renamed!')
+    setEditName(false)
   }
   const deleteTask = (event) => {
     const todos = todoContext.todos

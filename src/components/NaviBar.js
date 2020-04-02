@@ -79,6 +79,43 @@ export function NaviBar (props) {
     if (todoContext.selectedList) return setSelectedList(true)
     setSelectedList(['list', 'today', 'scheduled'].includes(type))
   }, [type, todoContext.selectedList])
+  const findListIndex = (list) => {
+    return todoContext.todos.findIndex((item) => item.id === list.id)
+  }
+  const deleteTask = async (objToBeDeleted, listIndex) => {
+    const todos = todoContext.todos
+    const res = await window.fetch('https://todomongoapi.herokuapp.com/task', {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(objToBeDeleted)
+    })
+    if (res.status === 204) {
+      todos[listIndex].tasks = todos[listIndex].tasks.filter((task) => task.id !== objToBeDeleted.id)
+      todoContext.setTodos([...todos])
+    }
+  }
+  const clearDone = () => {
+    const typeMapper = {
+      today: todoContext.today,
+      scheduled: todoContext.schld
+    }
+    if (type === 'list') {
+      const index = findListIndex(todoContext.selectedList)
+      todoContext.selectedList.tasks.forEach(async (item) => {
+        item.listid = todoContext.todos[index].id
+        if (item.done) await deleteTask(item, index)
+      })
+      todoContext.setMessage('cleared done tasks!')
+      todoContext.setSuccess(true)
+      return
+    }
+    typeMapper[type].forEach(async (item) => {
+      item.listid = todoContext.todos[item.listIndex].id
+      if (item.done) await deleteTask(item, item.listIndex)
+    })
+    todoContext.setMessage('cleared done tasks!')
+    todoContext.setSuccess(true)
+  }
   return (
     <>
       <AppBar className={classes.root}>
@@ -98,7 +135,7 @@ export function NaviBar (props) {
             </ToggleButton>}
           <ButtonGrp type={type} setType={setType} />
           {selectedList &&
-            <Button data-tip='Clear done'>
+            <Button onClick={clearDone} data-tip='Clear done'>
               <ClearAllIcon color='primary' />
             </Button>}
           {!selectedList &&
