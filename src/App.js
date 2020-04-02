@@ -24,6 +24,8 @@ function Alert (props) {
 }
 export default function App () {
   const [selectedList, setSelectedList] = useState(null)
+  const [today, setToday] = useState([])
+  const [schld, setSchld] = useState([])
   const [loading, setLoading] = useState(true)
   const [message, setMessage] = useState('')
   const [success, setSuccess] = useState(false)
@@ -34,6 +36,23 @@ export default function App () {
     setSuccess(false)
     setMessage('')
   }
+  useEffect(() => {
+    const dateNow = new Date().toISOString().slice(0, 10)
+    const allTasks = () => {
+      const filtered = []
+      todos.forEach((eachList, index) => {
+        filtered.push(...eachList.tasks.map(item => ({
+          ...item,
+          listname: eachList.listname,
+          listIndex: index
+        })))
+      })
+      return filtered
+    }
+    const tasks = allTasks()
+    setToday(tasks.filter(item => item.duedate === dateNow))
+    setSchld(tasks.filter(item => item.duedate !== ''))
+  }, [todos])
   useEffect(() => {
     fetch('https://todomongoapi.herokuapp.com/list')
       .then(response => response.json()).then(data => {
@@ -61,7 +80,9 @@ export default function App () {
           setError: setError,
           setMessage: setMessage,
           selectedList: selectedList,
-          setSelectedList: setSelectedList
+          setSelectedList: setSelectedList,
+          today: today,
+          schld: schld
         }}
         >
           <NaviBar />
@@ -73,7 +94,7 @@ export default function App () {
               <TaskContainer section='today' />
             </Route>
             <Route path='/scheduled'>
-              <TaskContainer section='scheduled' />
+              <TaskContainer section='schld' />
             </Route>
             <Route path='/'>
               {loading ? 'Loading' : <ListContainer />}

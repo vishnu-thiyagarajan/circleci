@@ -11,7 +11,7 @@ import { TodoContext } from '../App'
 
 function ButtonGrp () {
   const todoContext = useContext(TodoContext)
-  const [type, setType] = useState('Lists')
+  const [type, setType] = useState(window.location.pathname.slice(1).split('/')[0])
   const handleType = (event, newType) => {
     if (newType !== null) setType(newType)
   }
@@ -25,23 +25,23 @@ function ButtonGrp () {
         exclusive
         onChange={handleType}
       >
-        <ToggleButton value='Lists' data-tip='Lists' style={{ maxWidth: '40px', maxHeight: '35px' }}>
+        <ToggleButton value='list' data-tip='Lists' style={{ maxWidth: '40px', maxHeight: '35px' }}>
           <Link to='/'>
             <Badge badgeContent={todoContext.todos.length} color='primary'>
               <ListIcon onClick={handleList} fontSize='large' color='primary' />
             </Badge>
           </Link>
         </ToggleButton>
-        <ToggleButton value='Today' data-tip='Today' style={{ maxWidth: '40px', maxHeight: '35px' }}>
+        <ToggleButton value='today' data-tip='Today' style={{ maxWidth: '40px', maxHeight: '35px' }}>
           <Link to='/today'>
-            <Badge badgeContent={4} color='primary'>
+            <Badge badgeContent={todoContext.today.length} color='primary'>
               <TodayIcon onClick={handleToday} fontSize='large' color='primary' />
             </Badge>
           </Link>
         </ToggleButton>
-        <ToggleButton value='Scheduled' data-tip='Scheduled' style={{ maxWidth: '40px', maxHeight: '35px' }}>
+        <ToggleButton value='scheduled' data-tip='Scheduled' style={{ maxWidth: '40px', maxHeight: '35px' }}>
           <Link to='/scheduled'>
-            <Badge badgeContent={4} color='primary'>
+            <Badge badgeContent={todoContext.schld.length} color='primary'>
               <ScheduleIcon onClick={handleScheduled} fontSize='large' color='primary' />
             </Badge>
           </Link>

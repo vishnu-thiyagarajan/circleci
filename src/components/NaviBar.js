@@ -127,7 +127,6 @@ export function NaviBar (props) {
               onBlur={(event) => {
                 event.target.value = ''
                 searchList(event)
-                setInput('')
               }}
               size='small'
               autoFocus

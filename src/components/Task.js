@@ -109,7 +109,10 @@ export default function Task (props) {
               value={newName}
               onChange={(event) => setNewName(event.target.value)}
               onKeyPress={editTaskName}
-              onBlur={toggleEditName}
+              onBlur={() => {
+                setNewName(taskObj.taskname)
+                toggleEditName()
+              }}
               fullWidth
             />}
           {!props.section &&
