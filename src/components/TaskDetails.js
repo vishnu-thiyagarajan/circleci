@@ -45,7 +45,7 @@ export default function TaskDetails (props) {
         <CommentIcon data-tip='Details' />
       </IconButton>
       <Dialog open={open} onClose={handleClose} fullWidth aria-labelledby='form-dialog-title'>
-        <DialogTitle id='form-dialog-title'>Task Details</DialogTitle>
+        <DialogTitle id='form-dialog-title'>Details of {task.taskname}</DialogTitle>
         <DialogContent>
           <textarea
             rows='10'

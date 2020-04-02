@@ -37,6 +37,7 @@ export function NaviBar (props) {
   const history = useHistory()
   const todoContext = useContext(TodoContext)
   const [name, setName] = useState('')
+  const [type, setType] = useState(window.location.pathname.slice(1).split('/')[0])
   const [selectedList, setSelectedList] = useState(null)
   const [input, setInput] = useState('')
   const getNewList = () => setInput(input === 'newlist' ? '' : 'newlist')
@@ -74,8 +75,10 @@ export function NaviBar (props) {
     todoContext.setTodos(todoContext.todos.slice())
   }
   useEffect(() => {
-    setSelectedList(!!todoContext.selectedList)
-  }, [todoContext.selectedList])
+    if (window.location.pathname === '/') return setSelectedList(false)
+    if (todoContext.selectedList) return setSelectedList(true)
+    setSelectedList(['list', 'today', 'scheduled'].includes(type))
+  }, [type, todoContext.selectedList])
   return (
     <>
       <AppBar className={classes.root}>
@@ -93,7 +96,7 @@ export function NaviBar (props) {
             >
               <AddIcon color='primary' />
             </ToggleButton>}
-          <ButtonGrp />
+          <ButtonGrp type={type} setType={setType} />
           {selectedList &&
             <Button data-tip='Clear done'>
               <ClearAllIcon color='primary' />

@@ -119,8 +119,10 @@ export default function Task (props) {
             <Button data-tip='Delete' onClick={deleteTask}>
               <DeleteIcon />
             </Button>}
+          {props.section === 'schld' &&
+            <div style={{ padding: '5px' }}>{taskObj.duedate}</div>}
           {props.section &&
-            <div>{taskObj.listname}</div>}
+            <div style={{ padding: '5px' }}>{taskObj.listname}</div>}
           <ListItemSecondaryAction>
             <TaskDetails taskObj={taskObj} taskDetails={taskDetails} />
           </ListItemSecondaryAction>

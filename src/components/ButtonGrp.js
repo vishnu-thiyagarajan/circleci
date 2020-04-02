@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react'
+import React, { useContext } from 'react'
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup'
 import ListIcon from '@material-ui/icons/List'
 import TodayIcon from '@material-ui/icons/Today'
@@ -9,11 +9,11 @@ import { Link } from 'react-router-dom'
 import ReactTooltip from 'react-tooltip'
 import { TodoContext } from '../App'
 
-function ButtonGrp () {
+function ButtonGrp (props) {
   const todoContext = useContext(TodoContext)
-  const [type, setType] = useState(window.location.pathname.slice(1).split('/')[0])
+  const type = props.type
   const handleType = (event, newType) => {
-    if (newType !== null) setType(newType)
+    if (newType !== null) props.setType(newType)
   }
   const handleList = () => todoContext.setSelectedList(null)
   const handleToday = () => todoContext.setSelectedList('today')
