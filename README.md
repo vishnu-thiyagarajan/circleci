@@ -1,4 +1,4 @@
-This project is hosted [here](https://5e85ceea6aaab88f77682046--brave-swanson-be3432.netlify.com/).  
+This project is hosted [here](https://ubuntutodo.netlify.com/).  
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
